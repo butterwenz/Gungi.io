@@ -9,13 +9,13 @@ const Constants = require('../shared/constants');
 const { PLAYER_RADIUS, PLAYER_MAX_HP, BULLET_RADIUS, MAP_SIZE } = Constants;
 
 // Get the canvas graphics context
-const canvas = document.getElementById('game-canvas');
+const canvas = document.getElementById('chessboardCanvas');
 const context = canvas.getContext('2d');
 setCanvasDimensions();
 
 function setCanvasDimensions() {
-  // On small screens (e.g. phones), we want to "zoom out" so players can still see at least
-  // 800 in-game units of width.
+  // 在小屏幕（例如手機）上，我們希望“縮小”以便玩家至少仍能看到
+  // 800 個遊戲內寬度單位.
   const scaleRatio = Math.max(1, 800 / window.innerWidth);
   canvas.width = scaleRatio * window.innerWidth;
   canvas.height = scaleRatio * window.innerHeight;
@@ -28,50 +28,60 @@ let animationFrameRequestId;
 function render() {
   const { me, others, bullets } = getCurrentState();
   if (me) {
-    // Draw background
-    renderBackground(me.x, me.y);
+    // 繪製背景
+    drawChessboard();
 
-    // Draw boundaries
+    // 劃定界限
     context.strokeStyle = 'black';
     context.lineWidth = 1;
     context.strokeRect(canvas.width / 2 - me.x, canvas.height / 2 - me.y, MAP_SIZE, MAP_SIZE);
 
-    // Draw all bullets
+    // 繪製所有子彈
     bullets.forEach(renderBullet.bind(null, me));
 
-    // Draw all players
+    // 繪製所有玩家
     renderPlayer(me, me);
     others.forEach(renderPlayer.bind(null, me));
   }
 
-  // Rerun this render function on the next frame
+  // 在下一幀重新運行此渲染函數
   animationFrameRequestId = requestAnimationFrame(render);
 }
 
-function renderBackground(x, y) {
-  const backgroundX = MAP_SIZE / 2 - x + canvas.width / 2;
-  const backgroundY = MAP_SIZE / 2 - y + canvas.height / 2;
-  const backgroundGradient = context.createRadialGradient(
-    backgroundX,
-    backgroundY,
-    MAP_SIZE / 10,
-    backgroundX,
-    backgroundY,
-    MAP_SIZE / 2,
-  );
-  backgroundGradient.addColorStop(0, 'black');
-  backgroundGradient.addColorStop(1, 'gray');
-  context.fillStyle = backgroundGradient;
+// 繪製棋盤
+function drawChessboard() {
+  const boardSize = 80;
+  const canvasSize = boardSize * 8;
+
+  // 繪製背景
+  context.fillStyle = '#FFFFFF';
   context.fillRect(0, 0, canvas.width, canvas.height);
+  
+  // 繪製棋盤格子
+  context.fillStyle = '#ffb764';
+  context.strokeStyle = '#000000';
+
+  const offsetX = (canvas.width - canvasSize) / 2;
+  const offsetY = (canvas.height - canvasSize) / 2;
+  
+  for (let row = 0; row < 8; row++) {
+    for (let col = 0; col < 8; col++) {
+      const x = offsetX + col * boardSize;
+      const y = offsetY + row * boardSize;
+      
+      context.fillRect(x, y, boardSize, boardSize);
+      context.strokeRect(x, y, boardSize, boardSize);
+    }
+  }
 }
 
-// Renders a ship at the given coordinates
+// 在給定坐標處渲染一艘船
 function renderPlayer(me, player) {
   const { x, y, direction } = player;
   const canvasX = canvas.width / 2 + x - me.x;
   const canvasY = canvas.height / 2 + y - me.y;
 
-  // Draw ship
+  //畫船
   context.save();
   context.translate(canvasX, canvasY);
   context.rotate(direction);
@@ -84,7 +94,7 @@ function renderPlayer(me, player) {
   );
   context.restore();
 
-  // Draw health bar
+  // 繪製健康條
   context.fillStyle = 'white';
   context.fillRect(
     canvasX - PLAYER_RADIUS,
@@ -116,21 +126,21 @@ function renderMainMenu() {
   const t = Date.now() / 7500;
   const x = MAP_SIZE / 2 + 800 * Math.cos(t);
   const y = MAP_SIZE / 2 + 800 * Math.sin(t);
-  renderBackground(x, y);
+  drawChessboard();
 
-  // Rerun this render function on the next frame
+  // 在下一幀重新運行此渲染函數
   animationFrameRequestId = requestAnimationFrame(renderMainMenu);
 }
 
 animationFrameRequestId = requestAnimationFrame(renderMainMenu);
 
-// Replaces main menu rendering with game rendering.
+// 用遊戲渲染替換主菜單渲染。
 export function startRendering() {
   cancelAnimationFrame(animationFrameRequestId);
   animationFrameRequestId = requestAnimationFrame(render);
 }
 
-// Replaces game rendering with main menu rendering.
+// 用主菜單渲染替換遊戲渲染。
 export function stopRendering() {
   cancelAnimationFrame(animationFrameRequestId);
   animationFrameRequestId = requestAnimationFrame(renderMainMenu);

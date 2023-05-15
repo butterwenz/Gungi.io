@@ -1,27 +1,19 @@
 <h1 align="center">
-    <img alt="An Example .io Game" title="An Example .io Game" src="https://github.com/vzhou842/example-.io-game/blob/master/public/assets/icon.svg" width="140"> <br />
-    An Example .io Game
+    <img alt="Gungi.io Game" title="Gungi.io Game" src="https://github.com/butterwenz/Gungi.io/blob/Chess_game/public/assets/w5.png" width="140"> <br />
+    Gungi.io
 </h1>
-<h4 align="center">
-  <a href="https://example-io-game.victorzhou.com">https://example-io-game.victorzhou.com</a>
-</h4>
 
-<p align="center">
-  <a href="https://travis-ci.com/vzhou842/example-.io-game">
-    <img src="https://travis-ci.com/vzhou842/example-.io-game.svg?branch=master" alt="Build Status"></img>
-  </a>
-</p>
+修改 https://github.com/vzhou842/example-.io-game 製作成 [Gungi.io](https://github.com/butterwenz/Gungi.io)
 
-An example multiplayer (.io) web game. Read the walkthrough: [**How to Build a Multiplayer (.io) Web Game**](https://victorzhou.com/blog/build-an-io-game-part-1/).
-
-Built with [Node.js](https://nodejs.org/), [socket.io](https://socket.io/), and [HTML5 Canvas](https://www.w3schools.com/html/html5_canvas.asp).
-
-To see this code with [Flow](https://flow.org/) typing, visit the [flow branch](https://github.com/vzhou842/example-.io-game/tree/flow).
+基於 [Node.js](https://nodejs.org/), [socket.io](https://socket.io/), and [HTML5 Canvas](https://www.w3schools.com/html/html5_canvas.asp).
 
 ## Development
 
 To get started, make sure you have Node and NPM installed. Then,
 
+Node 16.20.0
+
+NPM  8.19.4
 ```bash
 $ npm install
 $ npm run develop
@@ -29,8 +21,7 @@ $ npm run develop
 
 on your local machine.
 
-To run the project in a production setting, simply
-
+要在生產環境中運行項目(將專案打包)，只需
 ```bash
 $ npm install
 $ npm run build
@@ -39,8 +30,7 @@ $ npm start
 
 ## Tests
 
-To run the tests for this this project, simply
-
+要為此項目運行測試，只需
 ```bash
 $ npm install
 $ npm test
