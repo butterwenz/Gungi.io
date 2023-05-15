@@ -17,7 +17,7 @@ const connectedPromise = new Promise(resolve => {
 
 export const connect = onGameOver => (
   connectedPromise.then(() => {
-    // Register callbacks
+    // 註冊回調
     socket.on(Constants.MSG_TYPES.GAME_UPDATE, processGameUpdate);
     socket.on(Constants.MSG_TYPES.GAME_OVER, onGameOver);
     socket.on('disconnect', () => {

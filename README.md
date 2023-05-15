@@ -5,7 +5,15 @@
 
 修改 https://github.com/vzhou842/example-.io-game 製作成 [Gungi.io](https://github.com/butterwenz/Gungi.io)
 
-基於 [Node.js](https://nodejs.org/), [socket.io](https://socket.io/), and [HTML5 Canvas](https://www.w3schools.com/html/html5_canvas.asp).
+如何構建多人遊戲( .io )網絡遊戲:
+
+以example-.io-game為範例
+
+https://victorzhou.com/blog/build-an-io-game-part-1
+
+https://victorzhou.com/blog/build-an-io-game-part-2
+
+Gungi.io基於 [Node.js](https://nodejs.org/), [socket.io](https://socket.io/), and [HTML5 Canvas](https://www.w3schools.com/html/html5_canvas.asp).
 
 ## 安裝方式
 
@@ -17,7 +25,6 @@ cd Gungi.io-Chess_game
 
 首先，請確保您已安裝 Node 和 NPM。然後，
 ```bash
-cd Gungi.io-Chess_game
 npm install
 npm run develop
 ```

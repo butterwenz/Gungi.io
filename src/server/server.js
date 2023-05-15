@@ -7,12 +7,12 @@ const Constants = require('../shared/constants');
 const Game = require('./game');
 const webpackConfig = require('../../webpack.dev.js');
 
-// Setup an Express server
+// 設置 Express 服務器
 const app = express();
 app.use(express.static('public'));
 
 if (process.env.NODE_ENV === 'development') {
-  // Setup Webpack for development
+  // 為開發設置 Webpack
   const compiler = webpack(webpackConfig);
   app.use(webpackDevMiddleware(compiler));
 } else {
@@ -20,15 +20,15 @@ if (process.env.NODE_ENV === 'development') {
   app.use(express.static('dist'));
 }
 
-// Listen on port
+// 監聽端口
 const port = process.env.PORT || 3000;
 const server = app.listen(port);
 console.log(`Server listening on port ${port}`);
 
-// Setup socket.io
+// 設置 socket.io
 const io = socketio(server);
 
-// Listen for socket.io connections
+// 監聽 socket.io 連接
 io.on('connection', socket => {
   console.log('Player connected!', socket.id);
 
@@ -37,7 +37,7 @@ io.on('connection', socket => {
   socket.on('disconnect', onDisconnect);
 });
 
-// Setup the Game
+// 設置遊戲
 const game = new Game();
 
 function joinGame(username) {

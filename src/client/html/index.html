@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Gungi.io</title>
+  <title>An example .io game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="shortcut icon" href="/assets/w5.png">
   <meta property="og:image" content="/assets/w5.png">
@@ -15,8 +15,30 @@
   </script>
 </head>
 <body>
-  <canvas id="chessboardCanvas" width="450" height="450"></canvas>
-  <div id="play-checkerboard" class="hidden">
+  <canvas id="game-canvas"></canvas>
+  <div id="play-menu" class="hidden">
+    <input type="text" id="username-input" placeholder="Username" />
+    <button id="play-button">PLAY</button>
+  </div>
+  <div id="leaderboard" class="hidden">
+    <table>
+      <tr>
+        <th>Username</th>
+        <th>Score</th>
+      </tr>
+      <tr><td></td><td></td></tr>
+      <tr><td></td><td></td></tr>
+      <tr><td></td><td></td></tr>
+      <tr><td></td><td></td></tr>
+      <tr><td></td><td></td></tr>
+    </table>
+  </div>
+  <div id="disconnect-modal" class="hidden">
+    <div>
+      <h2>Disconnected from Server </h2>
+      <hr />
+      <button id="reconnect-button">RECONNECT</button>
+    </div>
   </div>
 </body>
 </html>

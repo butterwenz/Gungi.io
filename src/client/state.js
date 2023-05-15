@@ -35,8 +35,8 @@ function currentServerTime() {
   return firstServerTimestamp + (Date.now() - gameStart) - RENDER_DELAY;
 }
 
-// Returns the index of the base update, the first game update before
-// current server time, or -1 if N/A.
+// 返回基礎更新的索引，即之前的第一個遊戲更新
+// 當前服務器時間，如果 N/A，則為 -1。
 function getBaseUpdate() {
   const serverTime = currentServerTime();
   for (let i = gameUpdates.length - 1; i >= 0; i--) {
@@ -47,7 +47,7 @@ function getBaseUpdate() {
   return -1;
 }
 
-// Returns { me, others, bullets }
+// 返回 { 我，其他人，子彈 }
 export function getCurrentState() {
   if (!firstServerTimestamp) {
     return {};
@@ -56,8 +56,8 @@ export function getCurrentState() {
   const base = getBaseUpdate();
   const serverTime = currentServerTime();
 
-  // If base is the most recent update we have, use its state.
-  // Otherwise, interpolate between its state and the state of (base + 1).
+  // 如果 base 是我們擁有的最新更新，則使用它的狀態。
+// 否則，在其狀態和 (base + 1) 的狀態之間進行插值。
   if (base < 0 || base === gameUpdates.length - 1) {
     return gameUpdates[gameUpdates.length - 1];
   } else {
@@ -92,20 +92,20 @@ function interpolateObjectArray(objects1, objects2, ratio) {
   return objects1.map(o => interpolateObject(o, objects2.find(o2 => o.id === o2.id), ratio));
 }
 
-// Determines the best way to rotate (cw or ccw) when interpolating a direction.
-// For example, when rotating from -3 radians to +3 radians, we should really rotate from
-// -3 radians to +3 - 2pi radians.
+// 確定插值方向時的最佳旋轉方式（順時針或逆時針）。
+// 例如，當從 -3 弧度旋轉到 +3 弧度時，我們實際上應該從
+// -3 弧度到 +3 -2pi 弧度。
 function interpolateDirection(d1, d2, ratio) {
   const absD = Math.abs(d2 - d1);
   if (absD >= Math.PI) {
-    // The angle between the directions is large - we should rotate the other way
+    // 方向之間的角度很大 -我們應該向另一方向旋轉
     if (d1 > d2) {
       return d1 + (d2 + 2 * Math.PI - d1) * ratio;
     } else {
       return d1 - (d2 - 2 * Math.PI - d1) * ratio;
     }
   } else {
-    // Normal interp
+    // 正常插值
     return d1 + (d2 - d1) * ratio;
   }
 }

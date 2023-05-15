@@ -15,7 +15,7 @@ class Game {
   addPlayer(socket, username) {
     this.sockets[socket.id] = socket;
 
-    // Generate a position to start this player at.
+    // 生成這個玩家的起始位置。
     const x = Constants.MAP_SIZE * (0.25 + Math.random() * 0.5);
     const y = Constants.MAP_SIZE * (0.25 + Math.random() * 0.5);
     this.players[socket.id] = new Player(socket.id, username, x, y);
@@ -33,12 +33,12 @@ class Game {
   }
 
   update() {
-    // Calculate time elapsed
+    // 計算經過的時間
     const now = Date.now();
     const dt = (now - this.lastUpdateTime) / 1000;
     this.lastUpdateTime = now;
 
-    // Update each bullet
+    // 更新每個項目符號
     const bulletsToRemove = [];
     this.bullets.forEach(bullet => {
       if (bullet.update(dt)) {
@@ -48,7 +48,7 @@ class Game {
     });
     this.bullets = this.bullets.filter(bullet => !bulletsToRemove.includes(bullet));
 
-    // Update each player
+    // 更新每個玩家
     Object.keys(this.sockets).forEach(playerID => {
       const player = this.players[playerID];
       const newBullet = player.update(dt);
@@ -57,7 +57,7 @@ class Game {
       }
     });
 
-    // Apply collisions, give players score for hitting bullets
+    // 應用碰撞，給玩家打子彈的分數
     const destroyedBullets = applyCollisions(Object.values(this.players), this.bullets);
     destroyedBullets.forEach(b => {
       if (this.players[b.parentID]) {
@@ -66,7 +66,7 @@ class Game {
     });
     this.bullets = this.bullets.filter(bullet => !destroyedBullets.includes(bullet));
 
-    // Check if any players are dead
+    // 檢查是否有玩家死亡
     Object.keys(this.sockets).forEach(playerID => {
       const socket = this.sockets[playerID];
       const player = this.players[playerID];
@@ -76,7 +76,7 @@ class Game {
       }
     });
 
-    // Send a game update to each player every other time
+    // 每隔一段時間向每位玩家發送一次遊戲更新
     if (this.shouldSendUpdate) {
       const leaderboard = this.getLeaderboard();
       Object.keys(this.sockets).forEach(playerID => {

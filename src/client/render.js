@@ -8,14 +8,14 @@ const Constants = require('../shared/constants');
 
 const { PLAYER_RADIUS, PLAYER_MAX_HP, BULLET_RADIUS, MAP_SIZE } = Constants;
 
-// Get the canvas graphics context
-const canvas = document.getElementById('chessboardCanvas');
+// 獲取畫布圖形上下文
+const canvas = document.getElementById('game-canvas');
 const context = canvas.getContext('2d');
 setCanvasDimensions();
 
 function setCanvasDimensions() {
   // 在小屏幕（例如手機）上，我們希望“縮小”以便玩家至少仍能看到
-  // 800 個遊戲內寬度單位.
+  // 800 個遊戲內寬度單位。
   const scaleRatio = Math.max(1, 800 / window.innerWidth);
   canvas.width = scaleRatio * window.innerWidth;
   canvas.height = scaleRatio * window.innerHeight;
@@ -29,7 +29,7 @@ function render() {
   const { me, others, bullets } = getCurrentState();
   if (me) {
     // 繪製背景
-    drawChessboard();
+    renderBackground(me.x, me.y);
 
     // 劃定界限
     context.strokeStyle = 'black';
@@ -49,21 +49,33 @@ function render() {
 }
 
 // 繪製棋盤
-function drawChessboard() {
+function renderBackground(x, y) {
   const boardSize = 80;
   const canvasSize = boardSize * 8;
 
   // 繪製背景
-  context.fillStyle = '#FFFFFF';
+  const backgroundX = MAP_SIZE / 2 - x + canvas.width / 2;
+  const backgroundY = MAP_SIZE / 2 - y + canvas.height / 2;
+  const backgroundGradient = context.createRadialGradient(
+    backgroundX,
+    backgroundY,
+    MAP_SIZE / 10,
+    backgroundX,
+    backgroundY,
+    MAP_SIZE / 2,
+  );
+  backgroundGradient.addColorStop(0, 'black');
+  backgroundGradient.addColorStop(1, 'gray');
+  context.fillStyle = backgroundGradient;
   context.fillRect(0, 0, canvas.width, canvas.height);
   
-  // 繪製棋盤格子
+  
   context.fillStyle = '#ffb764';
   context.strokeStyle = '#000000';
 
   const offsetX = (canvas.width - canvasSize) / 2;
   const offsetY = (canvas.height - canvasSize) / 2;
-  
+  // 繪製格子
   for (let row = 0; row < 8; row++) {
     for (let col = 0; col < 8; col++) {
       const x = offsetX + col * boardSize;
@@ -81,7 +93,7 @@ function renderPlayer(me, player) {
   const canvasX = canvas.width / 2 + x - me.x;
   const canvasY = canvas.height / 2 + y - me.y;
 
-  //畫船
+  // 畫船
   context.save();
   context.translate(canvasX, canvasY);
   context.rotate(direction);
@@ -124,9 +136,9 @@ function renderBullet(me, bullet) {
 
 function renderMainMenu() {
   const t = Date.now() / 7500;
-  const x = MAP_SIZE / 2 + 800 * Math.cos(t);
-  const y = MAP_SIZE / 2 + 800 * Math.sin(t);
-  drawChessboard();
+  const x = MAP_SIZE / 2 ;
+  const y = MAP_SIZE / 2 ;
+  renderBackground(x, y);
 
   // 在下一幀重新運行此渲染函數
   animationFrameRequestId = requestAnimationFrame(renderMainMenu);

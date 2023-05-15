@@ -2,42 +2,41 @@
 // https://victorzhou.com/blog/build-an-io-game-part-1/#3-client-entrypoints
 import { connect, play } from './networking';
 import { startRendering, stopRendering } from './render';
-// import { startCapturingInput, stopCapturingInput } from './input';
+import { startCapturingInput, stopCapturingInput } from './input';
 import { downloadAssets } from './assets';
 import { initState } from './state';
 import { setLeaderboardHidden } from './leaderboard';
 
-// I'm using a tiny subset of Bootstrap here for convenience - there's some wasted CSS,
-// but not much. In general, you should be careful using Bootstrap because it makes it
-// easy to unnecessarily bloat your site.
+// 為了方便起見，我在這裡使用了一小部分 Bootstrap——有一些 CSS 被浪費了，
+// 但並不多。通常，您應該小心使用 Bootstrap，因為它可以
+// 容易使您的網站不必要地膨脹。
 import './css/bootstrap-reboot.css';
 import './css/main.css';
 
-const playCheckerboard = document.getElementById('play-checkerboard');
+const playMenu = document.getElementById('play-menu');
 const playButton = document.getElementById('play-button');
 const usernameInput = document.getElementById('username-input');
 
 Promise.all([
-  connect(),
+  connect(onGameOver),
   downloadAssets(),
 ]).then(() => {
-  // playCheckerboard.classList.remove('hidden');
+  playMenu.classList.remove('hidden');
   usernameInput.focus();
-  drawChessboard();
-  // playButton.onclick = () => {
-  //   // Play!
-  //   play(usernameInput.value);
-  //   playMenu.classList.add('hidden');
-  //   initState();
-  //   startCapturingInput();
-  //   startRendering();
-  //   setLeaderboardHidden(false);
-  // };
+  playButton.onclick = () => {
+    // Play!
+    play(usernameInput.value);
+    playMenu.classList.add('hidden');
+    initState();
+    startCapturingInput();
+    startRendering();
+    setLeaderboardHidden(false);
+  };
 }).catch(console.error);
 
 function onGameOver() {
   stopCapturingInput();
   stopRendering();
-  playCheckerboard.classList.remove('hidden');
-
+  playMenu.classList.remove('hidden');
+  setLeaderboardHidden(true);
 }
