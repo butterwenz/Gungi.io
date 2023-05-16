@@ -50,7 +50,7 @@ $ npm test
 
 ## Node版本
 
-Node 版本必須是16以下，可以使用Node版本控制工具:[NPM](https://github.com/coreybutler/nvm-windows/releases)，[直接下載](nvm-setup.exe)
+Node 版本必須是16以下，可以使用Node版本控制工具:[NVM](https://github.com/coreybutler/nvm-windows/releases)，[直接下載](nvm-setup.exe)
 
 ```bash
 nvm install 16
